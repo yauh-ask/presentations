@@ -1,0 +1,208 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>OWASP</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css" id="theme">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>Sup, OWASP?</section>
+				
+				<section>
+      				<section>
+				  		Open Web Application Security Project® (OWASP) is a nonprofit foundation that works to improve the security of software. </section>
+      				<section>
+						  <h3>
+							  Meaning:
+						  </h3>
+						  <p>
+							  <ul>
+								  <li> community-led open source software projects </li>
+								  <li>100s of local chapters worldwide</li>
+								  <li> 10 000 of members</li>
+								  <li> educational and training conferences</li>
+							</ul>
+			
+						  </p>
+						  <br>
+						 <p> ... the source for developers and technologists to <b>secure</b> the web. </p>
+					  </section>
+    			</section>
+				<section>
+					<h4>Top 10 Web Application Security Risks</h4>
+					<section>
+						<br>
+						<br>
+
+						<h5>1. Injection. </h5>
+						<p>
+							Injection flaws, such as SQL, NoSQL, OS, and LDAP injection, occur when untrusted data is sent to an interpreter as part of a command or query. The attacker’s hostile data can trick the interpreter into executing unintended commands or accessing data without proper authorization. </p>
+						<br>
+						* Example:
+					</section>
+					<section>
+						An application uses untrusted data in the construction of the following vulnerable SQL call:
+						<pre><code data-trim data-noescape> 
+							
+							String query = 
+
+							"SELECT * FROM accounts 
+							WHERE custID='" + request.getParameter("id") + "'"; 
+</code></pre>
+
+<p> the attacker modifies the ‘id’ parameter value in their browser to send: ‘ or ‘1’=’1. 
+	For example:
+	</p> 
+	<pre>
+		<code>http://example.com/app/accountView?id=' or '1'='1</code>
+	</pre>
+
+					</section>
+
+					<section>
+						<h4>Problem:</h4>
+
+<p>This changes the meaning of both queries to return all the records from the accounts table.
+	 More dangerous attacks could modify or delete data, or even invoke stored procedures.</p>					</section>
+				
+	 <section>
+		<h4>Solution:</h4>
+		<ul>
+			<li>Keep data separate from commands and queries.</li>
+			<li> Use positive or “whitelist” server-side input validation.</li>
+			<li>For any residual dynamic queries: escape special characters using the specific escape syntax for that interprete</li>
+	<li>Use LIMIT and other SQL controls within queries to prevent mass disclosure of records in case of SQL injection.</li>
+		</ul>
+	</section>
+	<section>
+		<h4>Top 10 Web Application Security Risks</h4>
+		<section>
+			<h5>2. Broken Authentication. </h5>
+			<br>
+			<p>Application functions related to authentication and session management 
+				are often implemented incorrectly, allowing attackers to compromise passwords,
+				 keys, or session tokens, or to exploit other implementation flaws to assume other users’ identities temporarily or permanently.</p>
+
+			</section>
+	</section>
+	<section>
+		<h5>Solution</h5>
+		  <ul>
+			<li> Multi-factor authentication!</li>
+			<li>Do not ship or deploy with any default credentials, particularly for admin users!</li>
+			<li>Implement weak-password checks!</li>
+			<li>Limit or increasingly delay failed login attempts.</li>
+			<li>...</li>
+			</ul>
+		</section>
+				
+
+			</section>
+<section>
+	<section>
+		<h4>Top 10 Web Application Security Risks</h4>
+		<section>
+			<h5>3. Sensitive Data Exposure. </h5>
+			<br>
+			<p>Sensitive data may be compromised without extra protection, such as encryption 
+				at rest or in transit, and requires special precautions when exchanged with the browser.</p>
+			</section>
+	</section>
+	<section>
+		<h5>Solution</h5>
+		  <ul>
+			<li> Classify data processed, stored or transmitted by an application!</li>
+			<li>Don’t store sensitive data unnecessarily. Discard it as soon as possible!</li>
+			<li>Make sure to encrypt all sensitive data at rest.</li>
+			<li>Disable caching for response that contain sensitive data.</li>
+			<li>...</li>
+			</ul>
+		</section>
+</section>
+
+<section>
+	<section>
+		<h4>Top 10 Web Application Security Risks</h4>
+		<section>
+			<h5>4. XML External Entities (XXE).</h5>
+			<br>
+			<p>Attackers are able to take advantage of web applications that use vulnerable component processing XML’s. 
+				Attackers are able to upload XML or include hostile commands or content within an XML document.</p>
+			</section>
+	</section>
+
+	<section>
+		<pre><code>
+			<?xml version="1.0"?>
+<!DOCTYPE lolz [
+ <!ENTITY lol "lol">
+ <!ELEMENT lolz (#PCDATA)>
+ <!ENTITY lol1 "&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;">
+ <!ENTITY lol2 "&lol1;&lol1;&lol1;&lol1;&lol1;&lol1;&lol1;&lol1;&lol1;&lol1;">
+ <!ENTITY lol3 "&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;">
+ <!ENTITY lol4 "&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;">
+ <!ENTITY lol5 "&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;">
+ <!ENTITY lol6 "&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;">
+ <!ENTITY lol7 "&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;">
+ <!ENTITY lol8 "&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;">
+ <!ENTITY lol9 "&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;">
+]>
+<lolz>&lol9;</lolz>
+		</code></pre>
+	</section>
+	<section>
+		<h5>Solution</h5>
+		  <ul>
+			<li> If possible, use less complex data formats (JSON), and avoid serialization of sensitive data</li>
+			<li>Patch or upgrade all XML processors and libraries in use.</li>
+			<li>Use Static Application Security Testing (SAST), aka source code analysis</li>
+			<li>...</li>
+			</ul>
+		</section>
+</section>
+
+<section>
+	5. Broken Access Control. <br>
+
+	6. Security Misconfiguration. <br>
+	7. Cross-Site Scripting (XSS). <br>
+	8. Insecure Deserialization. <br>
+	9. Using Components with Known Vulnerabilities. <br>
+	10. Insufficient Logging & Monitoring. <br>
+</section>
+
+<section>
+	<h5>Summary</h5>
+	<a href="https://owasp.org/www-project-top-ten/">OWASP</a>
+</section>
+</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
